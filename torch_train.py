@@ -57,7 +57,7 @@ def make_BoW(vocab_size: int, sentence: list):
 # 타켓값 부여된 BoW벡터 만들기
 def vec_with_target(path: Path, vocab_size: int, counter: Counter, target: float):
 	datum = make_datum(path)
-	vocab = make_vocabulary(path, vocab_size, counter)
+	vocab = make_vocabulary(vocab_size, counter)
 
 	data_set = []
 	for sentence in datum:
