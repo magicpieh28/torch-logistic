@@ -3,7 +3,7 @@ from pathlib import Path
 import torch
 from random import shuffle
 
-dir_folder = Path('/~/data')
+dir_folder = Path('/Users/jungwon-c/Documents/ML Logistic/data')
 positive = dir_folder/'books'/'positive.review'
 negative = dir_folder/'books'/'negative.review'
 
@@ -24,9 +24,14 @@ def make_datum(path: Path):
 		return datum
 
 # 사전 만들기
-def make_vocabulary(path: Path, vocab_size: int, counter: Counter):
-	datum = make_datum(path)
-	tuples = [(token, freq) for sentence in datum for token, freq in sentence]
+def make_vocabulary(vocab_size: int, counter: Counter):
+	pos_datum = make_datum(positive)
+	neg_datum = make_datum(negative)
+
+	pos_tuples = [(token, freq) for sentence in pos_datum for token, freq in sentence]
+	neg_tuples = [(token, freq) for sentence in neg_datum for token, freq in sentence]
+
+	tuples = pos_tuples + neg_tuples
 
 	for token, freq in tuples:
 		counter[token] += freq
@@ -38,7 +43,9 @@ def make_vocabulary(path: Path, vocab_size: int, counter: Counter):
 	return vocab
 
 # BoW 벡터 만들기
-def make_BoW(vocab_size: int, sentence: list, vocab: dict):
+def make_BoW(vocab_size: int, sentence: list):
+	vocab = make_vocabulary(vocab_size, counter)
+
 	BoW = [0] * vocab_size
 	for token, freq in sentence:
 		if token in vocab.keys():
@@ -71,4 +78,4 @@ def make_train_data(vocab_size: int, counter:Counter):
 
 if __name__ == '__main__':
 	counter = Counter()
-	make_train_data(300, counter)
+	make_vocabulary(300, counter)
