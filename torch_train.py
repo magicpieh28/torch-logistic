@@ -3,7 +3,7 @@ from pathlib import Path
 import torch
 from random import shuffle
 
-dir_folder = Path('/Users/jungwon-c/Documents/ML Logistic/data')
+dir_folder = Path('/~/data')
 positive = dir_folder/'books'/'positive.review'
 negative = dir_folder/'books'/'negative.review'
 
