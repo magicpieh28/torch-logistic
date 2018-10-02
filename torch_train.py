@@ -37,6 +37,16 @@ def make_vocabulary(path: Path, vocab_size: int, counter: Counter):
 	vocab[UNK] = len(vocab)
 	return vocab
 
+# BoW 벡터 만들기
+def make_BoW(vocab_size: int, sentence: list, vocab: dict):
+	BoW = [0] * vocab_size
+	for token, freq in sentence:
+		if token in vocab.keys():
+			BoW[vocab[token]] = 1
+		else:
+			BoW[vocab_size-1] = 1
+	return BoW
+
 # 타켓값 부여된 BoW벡터 만들기
 def vec_with_target(path: Path, vocab_size: int, counter: Counter, target: float):
 	datum = make_datum(path)
@@ -44,12 +54,7 @@ def vec_with_target(path: Path, vocab_size: int, counter: Counter, target: float
 
 	data_set = []
 	for sentence in datum:
-		BoW = [0] * vocab_size
-		for token, freq in sentence:
-			if token in vocab.keys():
-				BoW[vocab[token]] = 1
-			else:
-				BoW[vocab_size-1] = 1
+		BoW = make_BoW(vocab_size, sentence, vocab)
 		data_set.append((BoW, target))
 	return data_set
 
